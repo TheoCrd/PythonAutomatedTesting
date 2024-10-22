@@ -36,11 +36,11 @@ jobs:
     - name: Upload HTML report
       uses: actions/upload-artifact@v4
       with:
-        name: HTML Report
+        name: HTML Report -${{ github.run_id }}-${{ github.run_number }}
         path: tests_report.html
 
     - name: Upload Coverage report
       uses: actions/upload-artifact@v4
       with:
-        name: Coverage Report
+        name: Coverage Report -${{ github.run_id }}-${{ github.run_number }}
         path: cov_html
