@@ -46,7 +46,6 @@ jobs:
         path: cov_html
 
     - name: Upload coverage reports to Codecov with GitHub Action
-      uses: codecov/codecov-action@v4.2.0
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        slug: ${{ github.repository }}
+      run: |
+        curl -Os https://uploader.codecov.io/latest/windows/codecov.exe
+        ./codecov.exe -t ${{ secrets.CODECOV_TOKEN }} -f coverage.xml
