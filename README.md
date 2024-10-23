@@ -29,3 +29,30 @@
 <p align="center">
     Click on the graph to access Codecov overview
 </p>
+
+1. **Clone the Repository**:
+    ```sh
+    git clone https://github.com/TheoCrd/PythonAutomatedTesting.git
+    cd PythonAutomatedTesting
+    ```
+
+2. **Create a Virtual Environment**:
+    ```sh
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
+
+3. **Install the `requirements`**:
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+4. **(Optional) Install the `requirements_dev`**:
+    ```sh
+    pip install -r requirements_dev.txt
+    ```
+
+5. **Run `tox`**:
+    ```sh
+    tox
+    ```
