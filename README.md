@@ -2,7 +2,7 @@
 Initiation to Automated Testing in Python (w/ Pytest, tox & GitHub Actions).
 
 <p align="center">
-    <img src="https://github.com/TheoCrd/PythonAutomatedTesting/actions/workflows/tests.yml/badge.svg" alt="Tests" style="margin-right: 10px;">
+    <img src="https://github.com/TheoCrd/PythonAutomatedTesting/actions/workflows/tests.yml/badge.svg" alt="Tests">
     <a href="https://codecov.io/gh/TheoCrd/PythonAutomatedTesting" >
         <img src="https://codecov.io/gh/TheoCrd/PythonAutomatedTesting/graph/badge.svg?token=WS88R8LVLC"/>
     </a>
