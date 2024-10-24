@@ -7,18 +7,9 @@ from utils.gpu import GPU
 from utils.gpu import print_gpu_info
 
 
-def test_gpu_initialization():
+def test_gpu_initialization(mock_gpu):
     """Test that the GPU class initializes"""
-    gpu = GPU(
-        id=0,
-        name="Mock GPU",
-        total_memory=8192,
-        multiprocessor_count=16,
-        clock_rate=1500,
-        memory_clock_rate=7000,
-        memory_bus_width=256,
-        compute_capability="7.5",
-    )
+    gpu = mock_gpu
     assert gpu.id == 0
     assert gpu.name == "Mock GPU"
     assert gpu.total_memory == 8192
@@ -29,43 +20,27 @@ def test_gpu_initialization():
     assert gpu.compute_capability == "7.5"
 
 
-def test_gpu_str():
+def test_gpu_str(mock_gpu):
     """Test that the GPU class returns the correct string representation"""
-    gpu = GPU(
-        id=0,
-        name="Mock GPU",
-        total_memory=8192,
-        multiprocessor_count=16,
-        clock_rate=1500,
-        memory_clock_rate=7000,
-        memory_bus_width=256,
-        compute_capability="7.5",
-    )
+    gpu = mock_gpu
     expected_str = "GPU 0: Mock GPU, 8192 MB, 16 SM, 1500 MHz, 7000 MHz, 256 bit bus, CC 7.5"
     assert str(gpu) == expected_str
 
 
-def test_get_info():
+def test_get_info(mock_gpu):
     """Test that get_info returns the correct GPU information"""
-    gpu = GPU(
-        id=0,
-        name="Mock GPU",
-        total_memory=8192,
-        multiprocessor_count=16,
-        clock_rate=1500,
-        memory_clock_rate=7000,
-        memory_bus_width=256,
-        compute_capability="7.5",
-    )
+    gpu = mock_gpu
     info = gpu.get_info()
-    assert info["id"] == 0
-    assert info["name"] == "Mock GPU"
-    assert info["total_memory"] == 8192
-    assert info["multiprocessor_count"] == 16
-    assert info["clock_rate"] == 1500
-    assert info["memory_clock_rate"] == 7000
-    assert info["memory_bus_width"] == 256
-    assert info["compute_capability"] == "7.5"
+    assert info == {
+        "id": 0,
+        "name": "Mock GPU",
+        "total_memory": 8192,
+        "multiprocessor_count": 16,
+        "clock_rate": 1500,
+        "memory_clock_rate": 7000,
+        "memory_bus_width": 256,
+        "compute_capability": "7.5",
+    }
 
 
 def test_get_gpu_info(mocker):
