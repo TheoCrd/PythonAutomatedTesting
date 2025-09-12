@@ -1,0 +1,13 @@
+name: branchname
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-branch:
+    name: branch - ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Print branch name
+      run: echo "Branch name is ${{ github.ref_name }}"
