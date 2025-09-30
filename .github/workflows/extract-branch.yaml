@@ -21,6 +21,6 @@ jobs:
       - name: branch extract
         id: branch-extract
         run: |
-          echo "Branch to extract: ${{ github.event.inputs.branch_name }}"
+          echo "Branch to extract: ${{ github.event.inputs.branch_name }} || master"
 
 
