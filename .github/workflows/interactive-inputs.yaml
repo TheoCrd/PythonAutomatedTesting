@@ -1,0 +1,39 @@
+name: '[Example] Interactive Inputs'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  interactive-inputs:
+    timeout-minutes: 3
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - name: Example Interactive Inputs Step
+        id: interactive-inputs
+        uses: boasihq/interactive-inputs@v2
+        with:
+          ngrok-authtoken: 2xiT5JdwG9AjFHkTh90TpfPviOZ_4zc3KEa4p6zSotUVcf7QT
+          timeout: 160
+          title: 'A batch of 1 feature flag have been added to be deployed. Would you like to proceed?'
+          interactive: |
+            fields:
+              - label: branch_name
+                properties:
+                  display: What is the branch's name?
+                  type: text
+                  description: Name of the branch to extract the Smode build from
+                  maxLength: 20
+                  defaultValue: master
+                  required: true
+
+      - name: Display Outputs
+        shell: bash
+        run: |
+          echo "Display Outputs"
+          echo -e "\n==============================\n"
+          echo "Detected Outputs:"
+          echo "Branch Name: ${{ steps.interactive-inputs.outputs.branch_name }}"
+          echo -e "\n==============================\n"
