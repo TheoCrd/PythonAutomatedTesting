@@ -2,6 +2,8 @@ name: '[Example] Interactive Inputs'
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # Adjust the schedule as needed
 
 jobs:
   interactive-inputs:
@@ -11,8 +13,14 @@ jobs:
       contents: write
       actions: write
     steps:
+      - name: Set Default Branch Name
+        id: set-branch
+        if: github.event_name == 'schedule'
+        run: echo "branch_name=master" >> $GITHUB_ENV
+
       - name: Example Interactive Inputs Step
         id: interactive-inputs
+        if: github.event_name == 'workflow_dispatch'
         uses: boasihq/interactive-inputs@v2
         with:
           ngrok-authtoken: 2xiT5JdwG9AjFHkTh90TpfPviOZ_4zc3KEa4p6zSotUVcf7QT
@@ -20,7 +28,7 @@ jobs:
           title: 'A batch of 1 feature flag have been added to be deployed. Would you like to proceed?'
           interactive: |
             fields:
-              - label: branch name
+              - label: branch_name
                 properties:
                   display: What is the branch's name?
                   type: text
@@ -34,5 +42,9 @@ jobs:
         run: |
           echo "Display Outputs"
           echo -e "\n==============================\n"
-          echo "Detected Outputs: ${{join(steps.interactive-inputs.outputs.*, '\n')}}"
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "Branch Name: ${{ steps.interactive-inputs.outputs.branch_name }}"
+          else
+            echo "Branch Name: ${{ env.branch_name }}"
+          fi
           echo -e "\n==============================\n"
