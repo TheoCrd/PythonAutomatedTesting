@@ -3,7 +3,7 @@ name: '[Example] Interactive Inputs'
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *' # Adjust the schedule as needed
+    - cron: '*/5 0 * * *' # Adjust the schedule as needed
 
 jobs:
   interactive-inputs:
@@ -43,7 +43,7 @@ jobs:
           echo "Display Outputs"
           echo -e "\n==============================\n"
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "Branch Name: ${{ steps.interactive-inputs.outputs.branch_name }}"
+            echo "Branch Name: ${{join(steps.interactive-inputs.outputs.*, '\n')}}"
           else
             echo "Branch Name: ${{ env.branch_name }}"
           fi
