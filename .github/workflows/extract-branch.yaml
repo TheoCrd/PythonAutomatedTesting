@@ -15,7 +15,7 @@ jobs:
         id: fetch
         run: |
           # Get branch names from external repo
-          git ls-remote --heads https://github.com/dlrd/smode.git \
+          git ls-remote --heads https://github.com/TheoCrd/La-volonte-de-fer.git \
             | awk -F'/' '{print $NF}' > branches.txt
 
           echo "Branches found:"
