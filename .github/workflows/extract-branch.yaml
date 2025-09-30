@@ -1,0 +1,45 @@
+
+name: 'Extract Branch with Interactive Input'
+
+on:
+  workflow_dispatch:
+  # Optionally, you can add a schedule trigger
+  # schedule:
+  #   - cron: '0 0 * * *' # Runs daily at midnight
+
+jobs:
+  choose-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch branches from external repo
+        id: fetch
+        run: |
+          # Get branch names from external repo
+          git ls-remote --heads https://github.com/dlrd/smode.git \
+            | awk -F'/' '{print $NF}' > branches.txt
+
+          echo "Branches found:"
+          cat branches.txt
+
+          # Format into JSON array ["branch1","branch2",...]
+          branches_json=$(jq -R -s -c 'split("\n")[:-1]' branches.txt)
+
+          # Expose as output
+          echo "branches=$branches_json" >> $GITHUB_OUTPUT
+
+      - name: Prompt user for branch
+        id: ask-branch
+        uses: boasihq/interactive-inputs@v2
+        with:
+          ngrok-authtoken: 2xiT5JdwG9AjFHkTh90TpfPviOZ_4zc3KEa4p6zSotUVcf7QT
+          title: "Choose branch"
+          interactive: |
+            fields:
+              - label: branch_name
+                properties:
+                  display: "Branch Name"
+                  type: select
+                  description: "Pick a branch from the repo"
+                  required: true
+                  choices: ${{join(steps.fetch.outputs.*, '\n')}}
+
