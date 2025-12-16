@@ -37,11 +37,25 @@ runs:
 
           const [owner, repo] = repository.split('/');
 
-          // Fetch last 2 workflow runs for this workflow + branch
+          // Step 1: list all workflows in the repo
+          const workflows = await github.rest.actions.listRepoWorkflows({
+            owner,
+            repo,
+          });
+
+          // Step 2: find the workflow object by display name
+          const workflow = workflows.data.workflows.find(wf => wf.name === workflowName);
+
+          if (!workflow) {
+            console.log(`Workflow "${workflowName}" not found`);
+            return;
+          }
+
+          // Step 3: list last 2 runs using workflow.id
           const runs = await github.rest.actions.listWorkflowRuns({
             owner,
             repo,
-            workflow_id: process.env.GITHUB_WORKFLOW,
+            workflow_id: workflow.id, // ✅ workflow.id is an integer
             branch: branchName,
             per_page: 2,
           });
