@@ -94,7 +94,7 @@ runs:
                   title: `✅ Workflow ${workflowName} recovered`,
                   color: 'good',
                   markdown: `The workflow previously failed but is now passing again.
-                  🌿 Branch: **${branchName}**`,
+                  🌿 Branch: **${branchName}**,
                   🔎 Successful run: https://github.com/${repository}/actions/runs/${runId}`
                 }
               ]
