@@ -84,11 +84,10 @@ runs:
               username: 'SmodeClaqueMachine ✅',
               username_icon: 'https://i.imgur.com/dy2uNAS.png',
               markdown: [
-                `**${workflowName}** has recovered.`,
+                `🩹 **${workflowName}** has recovered.`,
               ].join('\n'),
               attachments: [
                 {
-                  title: `✅ Workflow ${workflowName} recovered`,
                   color: 'good',
                   markdown: `The workflow previously failed but is now passing again.
                   🌿 Branch: **${branchName}**.
