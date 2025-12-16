@@ -93,7 +93,7 @@ runs:
                   markdown: `The workflow previously failed but is now passing again.
                   🌿 Branch: **${branchName}**.
                   🔎 Successful run: https://github.com/${repository}/actions/runs/${runId}.
-                  📝 The report is accessible [here](https://dev.smode.io/ClaqueMachine/testCategory/?file=${runDate})`
+                  📝 The report is accessible [here](https://dev.smode.io/ClaqueMachine/testCategory/?file=runDate)`
                 }
               ]
             }
