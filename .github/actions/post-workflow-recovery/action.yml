@@ -84,7 +84,7 @@ runs:
               username: 'SmodeClaqueMachine ✅',
               username_icon: 'https://i.imgur.com/dy2uNAS.png',
               markdown: [
-                `✅ The workflow **${workflowName}** has recovered.`,
+                ` The workflow **${workflowName}** has recovered.`,
                 ``,
                 `🌿 Branch: **${branchName}**`,
                 `🔎 Successful run: https://github.com/${repository}/actions/runs/${runId}`
@@ -93,7 +93,9 @@ runs:
                 {
                   title: `✅ Workflow ${workflowName} recovered`,
                   color: 'good',
-                  markdown: `The workflow previously failed but is now passing again.`
+                  markdown: `The workflow previously failed but is now passing again.
+                  🌿 Branch: **${branchName}**`,
+                  🔎 Successful run: https://github.com/${repository}/actions/runs/${runId}`
                 }
               ]
             }
