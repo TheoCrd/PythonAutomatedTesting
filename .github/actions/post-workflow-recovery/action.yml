@@ -1,0 +1,105 @@
+name: Post workflows recovery
+description: Notify Missive when a workflow is back to green after a failure
+
+inputs:
+  missive-pat:
+    description: 'The required missive token'
+    required: true
+  workflow-name:
+    description: 'The name of the workflow'
+    required: true
+  branch-name:
+    description: 'The branch name where the workflow ran'
+    required: true
+  run-id:
+    description: 'The id of the current workflow run'
+    required: true
+  repository:
+    description: 'The repository where the workflow ran (owner/repo)'
+    required: true
+  conversation-id:
+    description: 'The id of the missive conversation'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Notify Missive if workflow recovered
+      uses: actions/github-script@v7.0.1
+      with:
+        script: |
+          const missivePat = '${{ inputs.missive-pat }}';
+          const workflowName = '${{ inputs.workflow-name }}';
+          const branchName = '${{ inputs.branch-name }}';
+          const runId = '${{ inputs.run-id }}';
+          const repository = '${{ inputs.repository }}';
+          const conversationId = '${{ inputs.conversation-id }}';
+
+          const [owner, repo] = repository.split('/');
+
+          // Fetch last 2 workflow runs for this workflow + branch
+          const runs = await github.rest.actions.listWorkflowRuns({
+            owner,
+            repo,
+            workflow_id: process.env.GITHUB_WORKFLOW,
+            branch: branchName,
+            per_page: 2,
+          });
+
+          if (!runs.data.workflow_runs || runs.data.workflow_runs.length < 2) {
+            console.log('No previous run found, skipping recovery notification');
+            return;
+          }
+
+          const previousRun = runs.data.workflow_runs[1];
+
+          if (previousRun.conclusion !== 'failure') {
+            console.log('Previous run was not a failure, skipping recovery notification');
+            return;
+          }
+
+          console.log('Previous run failed, sending recovery notification');
+
+          const payload = {
+            posts: {
+              conversation: conversationId,
+              notification: {
+                title: 'Workflow recovered',
+                body: `✅ ${workflowName} is back to green`,
+              },
+              username: 'SmodeClaqueMachine ✅',
+              username_icon: 'https://i.imgur.com/dy2uNAS.png',
+              markdown: [
+                `✅ The workflow **${workflowName}** has recovered.`,
+                ``,
+                `🌿 Branch: **${branchName}**`,
+                `🔎 Successful run: https://github.com/${repository}/actions/runs/${runId}`
+              ].join('\n'),
+              attachments: [
+                {
+                  title: `✅ Workflow ${workflowName} recovered`,
+                  color: 'good',
+                  markdown: `The workflow previously failed but is now passing again.`
+                }
+              ]
+            }
+          };
+
+          // Send the notification to Missive
+          try {
+            const response = await fetch('https://public.missiveapp.com/v1/posts', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${missivePat}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+            const data = await response.json();
+            console.log('Recovery message posted to Missive:', data);
+          } catch (error) {
+            console.error('Error posting message to Missive:', error);
+          }

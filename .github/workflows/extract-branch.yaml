@@ -23,4 +23,16 @@ jobs:
         run: |
           echo "Branch to extract: ${{ github.event.inputs.branch_name || 'master'}}"
 
+      - name: Notify recovery on Missive
+        if: success()
+        uses: ./.github/actions/post-workflows-recovery
+        with:
+          missive-pat: "missive_pat-iTY6BhrLSlSzyJA97V14jDGKTe0BiEWQssVqXy8Zx7kZhHmL0b-Oam_arfxn2fRXdzRCWA"
+          workflow-name: ${{ github.workflow }}
+          branch-name: ${{ github.ref_name }}
+          run-id: ${{ github.run_id }}
+          repository: ${{ github.repository }}
+          conversation-id: 'ef3fc7bd-a655-41ed-abc0-ec4db927efee'
+
+
 
