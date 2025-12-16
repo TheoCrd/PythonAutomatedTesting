@@ -25,7 +25,7 @@ jobs:
 
       - name: Notify recovery on Missive
         if: success()
-        uses: ./.github/actions/post-workflows-recovery
+        uses: ./.github/actions/post-workflow-recovery
         with:
           missive-pat: "missive_pat-iTY6BhrLSlSzyJA97V14jDGKTe0BiEWQssVqXy8Zx7kZhHmL0b-Oam_arfxn2fRXdzRCWA"
           workflow-name: ${{ github.workflow }}
