@@ -28,7 +28,7 @@ jobs:
           echo "Branch to extract: ${{ github.event.inputs.branch_name || 'master'}}"
 
       - name: Notify recovery on Missive
-        if: success()
+        if: success() && !startsWith(github.event.inputs.branch_name || 'master', 'R')
         uses: ./.github/actions/post-workflow-recovery
         with:
           missive-pat: "missive_pat-iTY6BhrLSlSzyJA97V14jDGKTe0BiEWQssVqXy8Zx7kZhHmL0b-Oam_arfxn2fRXdzRCWA"
